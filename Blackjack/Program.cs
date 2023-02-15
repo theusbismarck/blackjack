@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,121 +6,196 @@ using System.Threading.Tasks;
 
 namespace Blackjack
 {
+    public class Card
+    {
+        public int num;
+        public string value;
+        public char suit;
+
+        public Card(int aNum, string aValue, char aSuit)
+        {
+            num = aNum;
+            value = aValue;
+            suit = aSuit;
+        }
+    }
+    public class Deck
+    {
+        private static Random random = new Random();
+
+
+        public static Blackjack.Card DealCard()
+        {
+            return NewList().ElementAt(random.Next(0,51));
+        }
+
+        public static List<Blackjack.Card> NewList()
+        {
+            var deck = new List<Card>();
+
+            // CLUBS CARDS ♣
+            deck.Add(new Card(1, "A", '\u2663'));
+            deck.Add(new Card(2, "2", '\u2663'));
+            deck.Add(new Card(3, "3", '\u2663'));
+            deck.Add(new Card(4, "4", '\u2663'));
+            deck.Add(new Card(5, "5", '\u2663'));
+            deck.Add(new Card(6, "6", '\u2663'));
+            deck.Add(new Card(7, "7", '\u2663'));
+            deck.Add(new Card(8, "8", '\u2663'));
+            deck.Add(new Card(9, "9", '\u2663'));
+            deck.Add(new Card(10, "10", '\u2663'));
+            deck.Add(new Card(10, "J", '\u2663'));
+            deck.Add(new Card(10, "Q", '\u2663'));
+            deck.Add(new Card(10, "K", '\u2663'));
+            // SPADES CARDS ♠
+            deck.Add(new Card(1, "A", '\u2660'));
+            deck.Add(new Card(2, "2", '\u2660'));
+            deck.Add(new Card(3, "3", '\u2660'));
+            deck.Add(new Card(4, "4", '\u2660'));
+            deck.Add(new Card(5, "5", '\u2660'));
+            deck.Add(new Card(6, "6", '\u2660'));
+            deck.Add(new Card(7, "7", '\u2660'));
+            deck.Add(new Card(8, "8", '\u2660'));
+            deck.Add(new Card(9, "9", '\u2660'));
+            deck.Add(new Card(10, "10", '\u2660'));
+            deck.Add(new Card(10, "J", '\u2660'));
+            deck.Add(new Card(10, "Q", '\u2660'));
+            deck.Add(new Card(10, "K", '\u2660'));
+            // HEARTS CARDS ♥
+            deck.Add(new Card(1, "A", '\u2665'));
+            deck.Add(new Card(2, "2", '\u2665'));
+            deck.Add(new Card(3, "3", '\u2665'));
+            deck.Add(new Card(4, "4", '\u2665'));
+            deck.Add(new Card(5, "5", '\u2665'));
+            deck.Add(new Card(6, "6", '\u2665'));
+            deck.Add(new Card(7, "7", '\u2665'));
+            deck.Add(new Card(8, "8", '\u2665'));
+            deck.Add(new Card(9, "9", '\u2665'));
+            deck.Add(new Card(10, "10", '\u2665'));
+            deck.Add(new Card(10, "J", '\u2665'));
+            deck.Add(new Card(10, "Q", '\u2665'));
+            deck.Add(new Card(10, "K", '\u2665'));
+            // DIAMONDS CARDS ♦
+            deck.Add(new Card(1, "A", '\u2666'));
+            deck.Add(new Card(2, "2", '\u2666'));
+            deck.Add(new Card(3, "3", '\u2666'));
+            deck.Add(new Card(4, "4", '\u2666'));
+            deck.Add(new Card(5, "5", '\u2666'));
+            deck.Add(new Card(6, "6", '\u2666'));
+            deck.Add(new Card(7, "7", '\u2666'));
+            deck.Add(new Card(8, "8", '\u2666'));
+            deck.Add(new Card(9, "9", '\u2666'));
+            deck.Add(new Card(10, "10", '\u2666'));
+            deck.Add(new Card(10, "J", '\u2666'));
+            deck.Add(new Card(10, "Q", '\u2666'));
+            deck.Add(new Card(10, "K", '\u2666'));
+
+            return deck;
+
+            /*var firstItem = deck.ElementAt(6);
+            Console.Write(firstItem.value);
+            Console.Write(firstItem.suit);*/
+        }
+    }
+    public class Hand
+    {
+        public int score = 0;
+        public List<Card> handCards = new List<Card>();
+    }
     class Program
     {
         static void Main(string[] args)
         {
-            string[] dealerDeck = new string[2];
-            dealerDeck[0] = Shuffle();
-            dealerDeck[1] = Shuffle();
+            var dealerHand = new Hand();
+            var playerHand = new Hand();
+            var dealerDeck = dealerHand.handCards;
+            var playerDeck = playerHand.handCards;
 
-            string[] userDeck = {"[ ]", "[ ]", "[ ]", "[ ]", "[ ]", "[ ]", "[ ]", "[ ]", "[ ]"};
+            dealerDeck.Add(Deck.DealCard());
+            dealerDeck.Add(Deck.DealCard());
+            playerDeck.Add(Deck.DealCard());
+            playerDeck.Add(Deck.DealCard());
 
-            userDeck[0] = Shuffle();
-            userDeck[1] = Shuffle();
+            bool victory;
 
-            int dealerScore = (Convert.ToInt16(TurnInt(dealerDeck[0])) + Convert.ToInt16(TurnInt(dealerDeck[1])));
-            int userScore = (Convert.ToInt16(TurnInt(userDeck[0])) + Convert.ToInt16(TurnInt(userDeck[1])));
-
-            string answer;
-            int i = 1;
-            bool victory = false;
-            while (victory == false)
+            while (1 < 2)
             {
-                Console.WriteLine("Dealer's deck: " + dealerDeck[0] + " [ ]");
-                Console.Write("Your deck: " + string.Join(", ", userDeck));
-                if (userScore > 21)
+                int playerTotal = playerDeck.Sum(item => item.num);
+                int dealerTotal = dealerDeck.Sum(item => item.num);
+                Console.Write("Dealer's deck: " + dealerDeck[0].value + dealerDeck[0].suit + " [hidden]");
+                Console.WriteLine("");
+                Console.Write("Player's deck: ");
+                foreach (Blackjack.Card var in playerDeck)
                 {
-                    break;
-                } else if (userScore == 21)
+                    Console.Write(var.value + var.suit + " ");
+                }
+                Console.WriteLine("\nPlayer's score: " + playerTotal);
+                if ((playerDeck[0].num == 1 || playerDeck[1].num == 1) && (playerDeck[0].num == 10 || playerDeck[1].num == 10))
                 {
-                    Console.WriteLine("");
+                    playerTotal = playerTotal + 10;
+                    victory = true;
                     break;
                 }
-                if ((userDeck[0][0] == '1' || userDeck[1][0] == '1') && (userDeck[0][0] == 'A' || userDeck[1][0] == 'A'))
+                if ((dealerDeck[0].num == 1 || dealerDeck[1].num == 1) && (dealerDeck[0].num == 10 || dealerDeck[1].num == 10))
                 {
-                    userScore = userScore + 10;
-                    Console.WriteLine("");
+                    dealerTotal = dealerTotal + 10;
+                    victory = false;
                     break;
                 }
-                i++;
+                if (playerTotal > 21)
+                {
+                    victory = false;
+                    break;
+                }
+                else if (playerTotal == 21)
+                {
+                    victory = true;
+                    break;
+                }
                 Console.Write("\nDraw a card? (y/n) ");
-                answer = Console.ReadLine();
-                if (answer == "n")
+                string answer = Console.ReadLine();
+                if (answer == "y")
                 {
-                    break;
-                }
-                else if (answer == "y")
+                    playerDeck.Add(Deck.DealCard());
+                } 
+                else if (answer == "n")
                 {
-                   userDeck[i] = Shuffle();
-                   userScore = userScore + Convert.ToInt16(TurnInt(userDeck[i]));
-                } else
+                    if (playerTotal <= dealerTotal)
+                    {
+                        victory = false;
+                        break;
+                    } 
+                    else if (playerTotal > dealerTotal)
+                    {
+                        victory = true;
+                        break;
+                    }
+                } 
+                else
                 {
-                    Console.WriteLine("Invalid answer");
-                    i--;
+                    Console.WriteLine("\nInvalid answer");
                 }
             }
-            if (userScore > 21 || (dealerScore > userScore && dealerScore < 21))
-            {
-                Console.WriteLine("\n\nYou lose....");
-            } else if (userScore == 21 || (userScore > dealerScore && userScore < 21))
+            if (victory == true)
             {
                 Console.WriteLine("\nYou win!");
-            } else if (userScore == dealerScore && userScore < 21)
+            } else
             {
-                Console.WriteLine("\nIt's a tie.");
+                Console.WriteLine("\nYou lose...");
             }
-            Console.WriteLine("Dealer's deck: " + dealerDeck[0] + " " + dealerDeck[1]);
+            Console.Write("Dealer's deck: ");
+            foreach (Blackjack.Card var in dealerDeck)
+            {
+                Console.Write(var.value + var.suit + " ");
+            }
+            /* PRINT ALL THE CARDS
+            for (int i = 0; i < deck.Count; i++)
+            {
+                Console.Write(deck[i].num);
+                Console.Write(deck[i].suit + "\n");
+            }
+            */
             Console.ReadLine();
-        }
-
-        private static Random rand = new Random();
-
-        static string Shuffle() {
-            string[,] cardGrid =
-{ 
-                // CLUBS ♣
-                { "\u2663", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"},
-                // SPADES ♠
-                {"\u2660", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"},
-                // DIAMONDS ♦
-                {"\u2666", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"},
-                // HEARTS ♥
-                {"\u2665", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"}
-            };
-
-            int cardSuit = rand.Next(0, 4);
-            return cardGrid[rand.Next(cardSuit, 4), rand.Next(1, 13)] + cardGrid[cardSuit, 0];
-        }
-        static string TurnInt(string cardValue)
-        {
-            if (cardValue == "10\u2663" || cardValue == "10\u2660" || cardValue ==  "10\u2666" || cardValue == "10\u2665") {
-                cardValue = "X\u2663";
-            }
-            string cardNum = cardValue.Remove(cardValue.Length - 1, 1);
-            switch (cardNum)
-            {
-                case "A":
-                    cardNum = "1";
-                    break;
-                case "X":
-                    cardNum = "10";
-                    break;
-                case "J":
-                    cardNum = "10";
-                    break;
-                case "Q":
-                    cardNum = "10";
-                    break;
-                case "K":
-                    cardNum = "10";
-                    break;
-                case " ":
-                    cardNum = "0";
-                    break;
-
-            }
-            return cardNum;
         }
     }
 }
